@@ -14,5 +14,5 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from microblog.app import app #noqa
+from microblog.app import create_app #noqa
 
