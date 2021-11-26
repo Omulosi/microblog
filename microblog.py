@@ -1,0 +1,2 @@
+from microblog import app
+
