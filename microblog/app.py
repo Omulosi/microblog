@@ -49,6 +49,7 @@ def configure_extensions(app):
     migrate.init_app(app, db)
     
     # Flask-Login
+    login_manager.login_view = app.config["LOGIN_VIEW"]
     @login_manager.user_loader
     def load_user(user_id):
         """Loads the user. Required by the `login` extension."""
