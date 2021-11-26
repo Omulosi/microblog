@@ -12,4 +12,4 @@ htmlcov/
 dist/
 build/
 *.egg-info/
-activate_venv
+activate_venv.sh

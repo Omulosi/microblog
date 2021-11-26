@@ -31,22 +31,22 @@ def create_app(config=Config, instance_path=None):
     
     return app
 
+
+def configure_app(app, config):
+    """ Configures microblog """
+    app.config.from_object(config)
+
 def configure_extensions(app):
     # Flask-SQLAlchemy
     db.init_app(app)
     
     # Flask-Migrate
-    migrate.init_app(app)
+    migrate.init_app(app, db)
     
 def configure_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(routes.bp)
     return None
-    
-
-def configure_app(app, config):
-    """ Configures microblog """
-    app.config.from_object(config)
 
 
 def configure_logger(app):
