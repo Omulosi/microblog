@@ -4,9 +4,13 @@ Flask app
 import logging
 import sys
 from flask import Flask
+# config
 from config import Config
-from microblog.extensions import db, migrate
+# extensions
+from microblog.extensions import db, migrate, login_manager
 from microblog import routes
+# models
+from .models import User, Post
 
 def create_app(config=Config, instance_path=None):
     """Creates the app.
@@ -44,6 +48,13 @@ def configure_extensions(app):
     # Flask-Migrate
     migrate.init_app(app, db)
     
+    # Flask-Login
+    @login_manager.user_loader
+    def load_user(user_id):
+        """Loads the user. Required by the `login` extension."""
+        return User.query.get(int(user_id))
+    login_manager.init_app(app)
+    
 def configure_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(routes.bp)
@@ -61,10 +72,8 @@ def configure_shellcontext(app):
 
     def shell_context():
         """Shell context objects."""
-        return {"db": db, 'User': models.User, 'Post': models.Post}
+        return {"db": db, 'User': User, 'Post': Post}
 
     app.shell_context_processor(shell_context)
-    
-from . import models #noqa
 
     
