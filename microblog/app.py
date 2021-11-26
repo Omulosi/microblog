@@ -28,6 +28,7 @@ def create_app(config=Config, instance_path=None):
     configure_app(app, config)
     configure_extensions(app)
     configure_blueprints(app)
+    configure_shellcontext(app)
     
     return app
 
@@ -60,9 +61,10 @@ def configure_shellcontext(app):
 
     def shell_context():
         """Shell context objects."""
-        return {"db": db }
+        return {"db": db, 'User': models.User, 'Post': models.Post}
 
     app.shell_context_processor(shell_context)
     
-# from . import models # noqa
+from . import models #noqa
+
     
