@@ -67,7 +67,7 @@ def register():
         return redirect(url_for('user.login'))
     return render_template('register.html', title='Register', form=form)
 
-@bp.route('edit_profile')
+@bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     form = EditProfileForm()
