@@ -1,6 +1,7 @@
 """
 Routes
 """
+from datetime import datetime
 from flask import request, render_template, flash, redirect, url_for, Blueprint
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -9,6 +10,12 @@ from microblog.models import User
 from microblog.extensions import db
 
 bp = Blueprint('user', __name__)
+
+@bp.before_request
+def set_last_seen():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
 
 @bp.route('/')
 @bp.route('/index')
@@ -68,7 +75,7 @@ def profile(username):
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
-    return render_template('user.html', user=user, posts=posts)
+    return render_template('profile.html', user=user, posts=posts)
 
 @bp.route('/logout')
 def logout():
